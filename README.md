@@ -9,3 +9,5 @@ The thing is, when you try to implement an algorithm in the text book, it is tot
 DO NOT directly use the program to do the homework only because you are LAZY!
 DO the homework ON YOUR OWN!
 I have spent hours on these programs, for more than just doing homework and learned a lot. 
+
+**If you find this repository helps, please hit the star to let me know!**
