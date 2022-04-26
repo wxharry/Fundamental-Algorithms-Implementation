@@ -1,4 +1,6 @@
 # Fundamental-Algorithms-Implementation
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/wxharry/Fundamental-Algorithms-Implementation)
+
 This is a repository of some implementation of the algorithms introduced in Fundamental Algorithms CSCI-GA 1170.
 ## Why I did this?
 Sometimes the homework involves some complex computations. Then I thought of that it is a CS course, why not let the computer to do the job? So, I programed to check my answers and it turned out to be fun! (and painful but never mind).
@@ -9,3 +11,5 @@ The thing is, when you try to implement an algorithm in the text book, it is tot
 DO NOT directly use the program to do the homework only because you are LAZY!
 DO the homework ON YOUR OWN!
 I have spent hours on these programs, for more than just doing homework and learned a lot. 
+
+**If you find this repository helps, please hit the star to let me know!**
