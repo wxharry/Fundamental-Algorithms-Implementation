@@ -23,15 +23,42 @@ class Treap:
                 root = self.right_rotate(root)
         return root
 
+    """
+    Insert if value does not exist in treap
+    """
     def insert(self, value, priority):
-        self.priorities[value] = priority
-        self.root = self.__ins(self.root, value, priority)
+        if value not in self.priorities.keys():
+            self.priorities[value] = priority
+            self.root = self.__ins(self.root, value, priority)
+        return self.root
 
-    # Delete operation needs to be done
     def __del (self, root, value):
-        pass
+        if root == None:
+            pass
+        elif root.value > value:
+            root.left = self.__del(root.left, value)
+        elif root.value < value:
+            root.right = self.__del(root.right, value)
+        # If we find the root
+        elif root.value == value:
+            if root.left == root.right == None:
+                root = None
+            elif root.left == None:
+                root = root.right
+            elif root.right == None:
+                root = root.left
+            elif self.priorities[root.left.value] < self.priorities[root.right.value]:
+                root = self.left_rotate(root)
+                root.right = self.__del(root.right, value)
+            else:
+                root = self.right_rotate(root)
+                root.left = self.__del(root.left, value)
+        return root
+        
     def delete(self, value):
-        pass
+        if value in self.priorities.keys():
+            self.root = self.__del(self.root, value)
+        return self.root
 
     def left_rotate(self, u):
         v = u.left
@@ -49,5 +76,11 @@ class Treap:
         return self.root.__str__()
 
 treap = Treap("eimulats", [1,7,6,5,4,3,2,8])
+print("Initialize `simulate`")
+print(treap)
+print("insert y(0)")
 treap.insert('y', 0)
+print(treap)
+print("delete s")
+treap.delete('s')
 print(treap)
