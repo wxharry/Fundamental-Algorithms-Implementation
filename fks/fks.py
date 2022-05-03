@@ -105,7 +105,7 @@ for k in range(1, p):
                     break
             if is_perfect:
                 print("One final answer is", k, end='\t')             # 1351759
-                print("in {:.5f} seconds", time.time() - start_time)
+                print("in {:.5f} seconds".format(time.time() - start_time))
     except KeyboardInterrupt:
         print(k)
         exit(0)
