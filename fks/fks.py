@@ -1,8 +1,5 @@
-from email.policy import default
 from math import ceil
-
-from attr import has
-from numpy import empty
+import time
 
 K_const = """A, ABOUT, AN, AND, ARE, AS, AT, BE, BOY, BUT, BY, FOR, FROM, HAD, HAVE, HE, HER, HIS, HIM, I, IN, IS, IT, NOT, OF, ON, OR, SHE, THAT, THE, THEY, THIS, TO, WAS, WHAT, WHERE, WHICH, WHY, WITH, YOU"""
 K = K_const.split(", ")
@@ -29,22 +26,38 @@ def findPrime(n:int)->int:
             found = True
     return n;
 
-def hash(x, k):
+def hash(x, k, n):
     if isinstance(x, str):
         x = adic26(x)
     return ((x*k % p) % n)
-    
+
+bin_dict = dict()
 def isGood(k:int)->bool:
-    bin_dict = dict()
     for w in K:
-        bin_dict[hash(w, k)] = bin_dict.get(hash(w, k), 0) + 1
+        bin_dict[hash(w, k, n)] = bin_dict.get(hash(w, k, n), []) + [w]
     sum = 0
-    for key, val in bin_dict.items():
+    for key, lst in bin_dict.items():
+        val = len(lst)
         sum += val * (val - 1) / 2
         if sum >= n:
             return False
     return sum < n 
 
+b_array = []
+def isPerfect(k, i):
+    word_list = bin_dict.get(i)
+    if word_list == None:
+        return True
+    if len(word_list) > b_array[i] * b_array[i]:
+        return False
+    locations = set()
+    for w in word_list:
+        loc = hash(w, k, b_array[i] * b_array[i])
+        if loc in locations:
+            return False
+        else:
+            locations.add(loc)
+    return True
 
 maxWord = K[0]
 for word in K:
@@ -55,16 +68,11 @@ p = findPrime(adic26(maxWord))
 print("Prime is", p)   # p = 10657247
 
 # pick a good k and display the bins
-for k in range(p):
+for k in range(1, p):
     if isGood(k):
         print(str(k) + " is a good k")
-        bin_dict = dict()
-        # Collection bins
-        for w in K:
-            bin_dict[hash(w, k)] = bin_dict.get(hash(w, k), []) + [w]
-        
-        b_array = []
         for i in range(n):
+            b_array = []
             bi:list = bin_dict.get(i, [])
             b_array.append(len(bi))
             # List all the non-empty Bi's
@@ -74,5 +82,34 @@ for k in range(p):
         print(b_array)
         break
 
+print()
+print("find perfect")
+check_point = 0
+time_interval = 1
+start_time = time.time()
+for k in range(1, p):
+    try:
+        if check_point == 0 or time.time() - check_point > 60 * time_interval:
+            print("[Check point]", k)
+            check_point = time.time()
+        bin_dict = {}
+        if isGood(k):
+            b_array = []
+            for i in range(n):
+                bi:list = bin_dict.get(i, [])
+                b_array.append(len(bi))
+            is_perfect = True
+            for i in range(n):
+                is_perfect = isPerfect(k, i) & is_perfect
+                if not is_perfect:
+                    break
+            if is_perfect:
+                print("One final answer is", k, end='\t')             # 1351759
+                print("in {:.5f} seconds", time.time() - start_time)
+    except KeyboardInterrupt:
+        print(k)
+        exit(0)
 
+else:
+    print("Failed to find a perfect k")
 
