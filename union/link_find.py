@@ -1,4 +1,3 @@
-#! /usr/bin/python
 class linked_list:
     pi:list
     N:list
