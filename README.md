@@ -4,7 +4,7 @@
 This is a repository of some implementation of the algorithms introduced in Fundamental Algorithms CSCI-GA 1170.
 
 ## How to use
-You can clone the repository to your personal computer or simply click the [`Gitpd` Badge](https://gitpod.io/#https://github.com/wxharry/Fundamental-Algorithms-Implementation) to play with this project.
+You can clone the repository to your personal computer or simply click the `Gitpd` Badge to play with this project.
 
 After you download the project, remember to install the requirements with pip
 ``` bash
