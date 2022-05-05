@@ -1,9 +1,4 @@
-
-from ast import While
-from gettext import find
-from heapq import merge
-
-
+#! /usr/bin/python
 class linked_list:
     pi:list
     N:list
