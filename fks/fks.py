@@ -86,15 +86,15 @@ print("Prime is", p)   # p = 10657247
 for k in range(1, p):
     if isGood(k):
         print(str(k) + " is a good k")
+        b_array = []
         for i in range(n):
-            b_array = []
             bi:list = bin_dict.get(i, [])
             b_array.append(len(bi))
             # List all the non-empty Bi's
             if len(bi):
                 print("B_{0} = {1}".format(i, bi))
         # show the b[0-39] array
-        print(b_array)
+        print("b[] =", b_array)
         break
 
 print()
@@ -123,6 +123,9 @@ for k in range(1, p):
                         break
             if perfect == len(bin_dict.keys()):
                 k_global = k
+                print("Choosing k =", k)
+                print("k[] =", ks)
+                print("b[] =", b_array)
                 showHash()
                 break
     except KeyboardInterrupt:
