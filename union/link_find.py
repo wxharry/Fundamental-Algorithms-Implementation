@@ -9,24 +9,17 @@ class linked_list:
         self.N = [i for i in range(n+1)]
 
     def link(self, x, y):
-        self.pi[x] = y
-        self.N[y] = x
+        self.pi[x] = self.N[y]
+        self.N[y] = self.N[x]
+        self.N[x] = self.pi[x]
 
     def find(self, x):
         while self.pi[x] != x:
             x = self.pi[x]
         return x
-    
-    def find_head(self, x):
-        while self.N[x] != x:
-            x = self.N[x]
-        return x
 
     def union(self, x, y):
-        _x = self.find(x)
-        _y = self.find(y)
-        if _x != _y:
-            self.link(_x, self.find_head(y))
+        self.link(self.find(x), self.find(y))
 
 class anti_list:
     pi:list
