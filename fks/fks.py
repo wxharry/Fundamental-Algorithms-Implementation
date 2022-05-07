@@ -74,13 +74,10 @@ def showHash():
         print(idx, table)
     print("In my FKS scheme, I used {0} cells".format(number_cells))
 
-maxWord = K[0]
-for word in K:
-    if adic26(maxWord) < adic26(word):
-        maxWord = word
-print(maxWord, adic26(maxWord))     # WHICH 10657226
+maxWord = "ZZZZZ"
+print(adic26(maxWord))
 p = findPrime(adic26(maxWord))
-print("Prime is", p)   # p = 10657247
+print("Prime is", p)   # p = 12356633
 
 # pick a good k and display the bins
 for k in range(1, p):
