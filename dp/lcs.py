@@ -2,7 +2,8 @@ import numpy as np
 def lcs(X, Y):
     '''
     `lcs(X:string, Y:string)->object` computes the length of LCS of X and Y \\
-    Inputs are two strings and it returns L(X, Y) and the computation matrix
+    Inputs are two strings and it returns L(X, Y) and the computation matrix \\
+    Complexity is O(mn) time and O(min{m, n}) space
     '''
     # find the length of the strings
     m = len(X)
