@@ -31,24 +31,24 @@ def optimal_triangulation(P, n, W):
             A[i][i+t-1] = inf
             for k in range(i + 1, i + t - 1):
                 # For regular cases, updating A[i, i+t-1] is enough for the minimum cost
-                A[i][i+t-1] = min(A[i][i+t-1], A[i][k] + W(i, k, i+t-1) + A[k][i+t-1])
+                A[i][i+t-1] = min(A[i][i+t-1], A[i][k] + W(i, k, i+t-1, P) + A[k][i+t-1])
 
                 # The following `if` fills matrix K to record information to find out the actual optimal triangulation 
-                if A[i][i+t-1] > A[i][k] + W(i, k, i+t-1) + A[k][i+t-1]:
+                if A[i][i+t-1] > A[i][k] + W(i, k, i+t-1, P) + A[k][i+t-1]:
                     K[i][i+t-1] = k
     # print(np.matrix(A))
     # print(np.matrix(K))
-    return {'A':A, 'K':K, }
+    return A, K
 
 def main():
     P = [4, 1, 3, 2, 2, 3]
     P1 = [2, 1, 4, 1, 2, 3]
     n = len(P)
-    W = lambda i, j, k : P[i] + P[j] + P[k]
-    W2 = lambda i, j, k : P[i] * P[j] * P[k]
-    W3 = lambda i, j, k : abs(P[i] - P[j])+abs(P[i]-P[k])+abs(P[j]-P[k])
-    W4 = lambda i, j, k : P[i]*P[i] + P[j]*P[j] + P[k]*P[k]
-    A, K = optimal_triangulation(P1, n, W2)['A'], optimal_triangulation(P, n, W)['K']
+    W = lambda i, j, k, P: P[i] + P[j] + P[k]
+    W2 = lambda i, j, k, P : P[i] * P[j] * P[k]
+    W3 = lambda i, j, k, P : abs(P[i] - P[j])+abs(P[i]-P[k])+abs(P[j]-P[k])
+    W4 = lambda i, j, k, P : P[i]*P[i] + P[j]*P[j] + P[k]*P[k]
+    A, K = optimal_triangulation(P1, n, W2)
     print(np.matrix(A))
     print(np.matrix(K))
 
