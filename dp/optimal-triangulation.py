@@ -2,7 +2,7 @@ import numpy as np
 # Define a number that is big enough
 inf = 65535
 
-def optimal_triangulation(P, n, W):
+def optimal_triangulation(P, n, W, withK=False):
     '''
     `optimal_triangulation(P:int[], n:int, W:function)->{'A': A:int[int[]], 'K': K:int[int[]]}`
     computes the optimal solution for triangulation \\
@@ -10,6 +10,7 @@ def optimal_triangulation(P, n, W):
         `P` is a sequence of numbers representing a polygon; \\
         `n` is a integer representing the length of `P`; \\
         `W` is a Weight function for `P` \\
+        `withK` decides whether to output the matrix K
     Outputs: \\
         The output is a dictrionary including: \\
         `A` is a regular matrix for the algorithm, the minimum cost is at A[-1][-1]
@@ -31,14 +32,18 @@ def optimal_triangulation(P, n, W):
             A[i][i+t-1] = inf
             for k in range(i + 1, i + t - 1):
                 # For regular cases, updating A[i, i+t-1] is enough for the minimum cost
-                A[i][i+t-1] = min(A[i][i+t-1], A[i][k] + W(i, k, i+t-1, P) + A[k][i+t-1])
+                if not withK:
+                    A[i][i+t-1] = min(A[i][i+t-1], A[i][k] + W(i, k, i+t-1, P) + A[k][i+t-1])
 
                 # The following `if` fills matrix K to record information to find out the actual optimal triangulation 
-                if A[i][i+t-1] > A[i][k] + W(i, k, i+t-1, P) + A[k][i+t-1]:
+                if withK and A[i][i+t-1] > A[i][k] + W(i, k, i+t-1, P) + A[k][i+t-1]:
+                    A[i][i+t-1] = min(A[i][i+t-1], A[i][k] + W(i, k, i+t-1, P) + A[k][i+t-1])
                     K[i][i+t-1] = k
     # print(np.matrix(A))
     # print(np.matrix(K))
-    return A, K
+    if withK:
+        return A, K
+    return A
 
 def main():
     P = [4, 1, 3, 2, 2, 3]
@@ -48,7 +53,7 @@ def main():
     W2 = lambda i, j, k, P : P[i] * P[j] * P[k]
     W3 = lambda i, j, k, P : abs(P[i] - P[j])+abs(P[i]-P[k])+abs(P[j]-P[k])
     W4 = lambda i, j, k, P : P[i]*P[i] + P[j]*P[j] + P[k]*P[k]
-    A, K = optimal_triangulation(P1, n, W2)
+    A, K = optimal_triangulation(P1, n, W2, True)
     print(np.matrix(A))
     print(np.matrix(K))
 
