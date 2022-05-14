@@ -1,5 +1,4 @@
 from math import ceil
-import time
 
 K_const = """A, ABOUT, AN, AND, ARE, AS, AT, BE, BOY, BUT, BY, FOR, FROM, HAD, HAVE, HE, HER, HIS, HIM, I, IN, IS, IT, NOT, OF, ON, OR, SHE, THAT, THE, THEY, THIS, TO, WAS, WHAT, WHERE, WHICH, WHY, WITH, YOU"""
 K = K_const.split(", ")
@@ -9,6 +8,9 @@ B:list          # hash table
 b:list
 
 def adic26(word:str)->int:
+    '''
+    adic26 computes the value of a string word
+    '''
     bit = 0
     sum = 0
     for ch in word.lower()[::-1]:
@@ -18,6 +20,9 @@ def adic26(word:str)->int:
 
 
 def findPrime(n:int)->int:
+    '''
+    findPrime finds the minimum prime greater than n
+    '''
     found = False
     while not found:
         n += 1;
@@ -34,16 +39,23 @@ def hash(x, k, n):
     return ((x*k % p) % n)
 
 def get_partition(K, k):
+    '''
+    partitions K with k in the hash function \\
+    returns the hash table and the b array
+    '''
     n = len(K)
-    hast_table = [[] for _ in range(n)]
+    hash_table = [[] for _ in range(n)]
     b_array = []
     for w in K:
-        hast_table[hash(w, k, n)].append(w)
-    for t in hast_table:
+        hash_table[hash(w, k, n)].append(w)
+    for t in hash_table:
         b_array.append(len(t))
-    return hast_table, b_array
+    return hash_table, b_array
 
 def get_collision(B):
+    '''
+    computes the number of collisions for the given B
+    '''
     sum = 0
     for bin in B:
         val = len(bin)
@@ -51,16 +63,25 @@ def get_collision(B):
     return sum
 
 def isGood(k:int)->bool:
+    '''
+    returns True if all words can be put onto the hash table; otherwise returns False
+    '''
     hash_table, _ = get_partition(K, k)
     collision = get_collision(hash_table)
     return collision < n
 
 def isPerfect(ki:int, i:int)->bool:
+    '''
+    returns True if all words can be put onto the hash table without a collision; otherwise returns False
+    '''
     hash_table, _ = get_partition(B[i], ki)
     collision = get_collision(hash_table)
     return collision == 0
 
 def showHash():
+    '''
+    Shows the structure of the hash table B, and calculates the cells used in it
+    '''
     number_cells = n + 2
     for idx, subtable in zip(range(len(B)), B):
         number_cells += 2 + len(subtable) ** 2
