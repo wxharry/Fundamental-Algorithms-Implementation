@@ -63,16 +63,17 @@ def isPerfect(ki:int, i:int)->bool:
 def showHash():
     # init a hash table
     hash_table = [[] for i in range(n)]
-    number_cells = 0
     for key, wl in bin_dict.items():
         i = key
         hash_table[key] = ["" for j in range(b_array[i]*b_array[i])]
-        number_cells += b_array[i]*b_array[i]
         for w in wl:
             hash_table[key][hash(w, ks[i], b_array[i] * b_array[i])] = w
     for idx, table in zip(range(len(hash_table)), hash_table):
         print(idx, table)
-    print("In my FKS scheme, I used {0} cells".format(number_cells))
+    number_cells = n + 2
+    for i in b_array:
+        number_cells += 2 + i ** 2
+    print("In my FKS scheme, {0} cells are used".format(number_cells))
 
 maxWord = "ZZZZZ"
 print(adic26(maxWord))
