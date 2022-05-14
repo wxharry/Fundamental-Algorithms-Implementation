@@ -4,8 +4,9 @@ import time
 K_const = """A, ABOUT, AN, AND, ARE, AS, AT, BE, BOY, BUT, BY, FOR, FROM, HAD, HAVE, HE, HER, HIS, HIM, I, IN, IS, IT, NOT, OF, ON, OR, SHE, THAT, THE, THEY, THIS, TO, WAS, WHAT, WHERE, WHICH, WHY, WITH, YOU"""
 K = K_const.split(", ")
 n = len(K)
-k_global = 1
-p = 2
+p = 2           # a prime number
+B:list          # hash table
+b:list
 
 def adic26(word:str)->int:
     bit = 0
@@ -32,48 +33,39 @@ def hash(x, k, n):
         x = adic26(x)
     return ((x*k % p) % n)
 
-bin_dict = dict()
-def isGood(k:int)->bool:
+def get_partition(K, k):
+    n = len(K)
+    hast_table = [[] for _ in range(n)]
+    b_array = []
     for w in K:
-        bin_dict[hash(w, k, n)] = bin_dict.get(hash(w, k, n), []) + [w]
-    sum = 0
-    for key, lst in bin_dict.items():
-        val = len(lst)
-        sum += val * (val - 1) / 2
-        if sum >= n:
-            return False
-    return sum < n 
+        hast_table[hash(w, k, n)].append(w)
+    for t in hast_table:
+        b_array.append(len(t))
+    return hast_table, b_array
 
-b_array = []
+def get_collision(B):
+    sum = 0
+    for bin in B:
+        val = len(bin)
+        sum += val * (val - 1) // 2
+    return sum
+
+def isGood(k:int)->bool:
+    hash_table, _ = get_partition(K, k)
+    collision = get_collision(hash_table)
+    return collision < n
+
 def isPerfect(ki:int, i:int)->bool:
-    word_list = bin_dict.get(i)
-    if word_list == None:
-        return True
-    if len(word_list) > b_array[i] * b_array[i]:
-        return False
-    locations = set()
-    for w in word_list:
-        loc = hash(w, ki, b_array[i] * b_array[i])
-        if loc in locations:
-            return False
-        else:
-            locations.add(loc)
-    return True
+    hash_table, _ = get_partition(B[i], ki)
+    collision = get_collision(hash_table)
+    return collision == 0
 
 def showHash():
-    # init a hash table
-    hash_table = [[] for i in range(n)]
-    for key, wl in bin_dict.items():
-        i = key
-        hash_table[key] = ["" for j in range(b_array[i]*b_array[i])]
-        for w in wl:
-            hash_table[key][hash(w, ks[i], b_array[i] * b_array[i])] = w
-    for idx, table in zip(range(len(hash_table)), hash_table):
-        print(idx, table)
     number_cells = n + 2
-    for i in b_array:
-        number_cells += 2 + i ** 2
-    print("In my FKS scheme, {0} cells are used".format(number_cells))
+    for idx, subtable in zip(range(len(B)), B):
+        number_cells += 2 + len(subtable) ** 2
+        print(idx, subtable)
+    print("{0} cells are used in this FKS schema".format(number_cells))
 
 maxWord = "ZZZZZ"
 print(adic26(maxWord))
@@ -84,45 +76,28 @@ print("Prime is", p)   # p = 12356633
 for k in range(1, p):
     if isGood(k):
         print(str(k) + " is a good k")
-        b_array = []
-        for i in range(n):
-            bi:list = bin_dict.get(i, [])
-            b_array.append(len(bi))
-            # List all the non-empty Bi's
-            if len(bi):
-                print("B_{0} = {1}".format(i, bi))
+        B, b = get_partition(K, k)
+        showHash()
         # show the b[0-39] array
-        print("b[] =", b_array)
+        print("b[] =", b)
         break
 
 print()
 print("find perfect")
-check_point = 0
-time_interval = 1
-start_time = time.time()
 for k in range(1, p):
     try:
-        # if check_point == 0 or time.time() - check_point > 60 * time_interval:
-        #     print("[Check point]", k)
-        #     check_point = time.time()
-        bin_dict = {}
         if isGood(k):
-            b_array = []
-            for i in range(n):
-                bi:list = bin_dict.get(i, [])
-                b_array.append(len(bi))
-            perfect = 0
+            B, b = get_partition(K, k)
             ks = [1 for _ in range(n)]
             for i in range(n):
                 ki = 1
                 while not isPerfect(ki, i):
                     ki += 1
                 ks[i] = ki
-            k_global = k
             print("Choosing k =", k)
             print("k[] =", ks)
-            print("b[] =", b_array)
-            showHash()
+            print("b[] =", b)
+            # showHash()
             break
     except KeyboardInterrupt:
         print(k)
