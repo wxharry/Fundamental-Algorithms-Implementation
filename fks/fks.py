@@ -111,20 +111,18 @@ for k in range(1, p):
                 bi:list = bin_dict.get(i, [])
                 b_array.append(len(bi))
             perfect = 0
-            ks = [0 for i in range(n)]
+            ks = [1 for _ in range(n)]
             for i in range(n):
-                for ki in range(1, b_array[i] * b_array[i] + 1):
-                    if isPerfect(ki, i):
-                        ks[i] = ki
-                        perfect += 1
-                        break
-            if perfect == len(bin_dict.keys()):
-                k_global = k
-                print("Choosing k =", k)
-                print("k[] =", ks)
-                print("b[] =", b_array)
-                showHash()
-                break
+                ki = 1
+                while not isPerfect(ki, i):
+                    ki += 1
+                ks[i] = ki
+            k_global = k
+            print("Choosing k =", k)
+            print("k[] =", ks)
+            print("b[] =", b_array)
+            showHash()
+            break
     except KeyboardInterrupt:
         print(k)
         exit(0)
